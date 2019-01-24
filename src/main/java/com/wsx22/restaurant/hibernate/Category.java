@@ -2,6 +2,7 @@ package com.wsx22.restaurant.hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table (name = "categories")
@@ -16,13 +17,17 @@ public class Category implements Serializable {
     @Column (name = "name")
     private String name;
 
-    //private List<Menu> menus;
+    @OneToMany (cascade = CascadeType.ALL)
+    @JoinTable (name = "menu_categories", joinColumns = {@JoinColumn (name = "id_category")},
+                inverseJoinColumns = {@JoinColumn (name = "id_menu") })
+    private List<Menu> menu;
 
     public Category() {
     }
 
-    public Category(String name) {
+    public Category(String name, List<Menu> menu) {
         this.name = name;
+        this.menu = menu;
     }
 
     public int getId() {
@@ -33,7 +38,15 @@ public class Category implements Serializable {
         return name;
     }
 
+    public List<Menu> getMenu() {
+        return menu;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setMenu(List<Menu> menu) {
+        this.menu = menu;
     }
 }
